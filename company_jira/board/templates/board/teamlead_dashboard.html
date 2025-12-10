@@ -1,0 +1,119 @@
+
+{% extends "base.html" %}
+{% block title %}Memebers Status Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Card List Container */
+.status-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* Each row */
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+/* Left side */
+.status-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: #27ae60;
+    border-radius: 50%;
+}
+
+.status-left .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.status-left .info .title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.status-left .info .user {
+    font-size: 13px;
+    color: #777;
+}
+
+/* Middle description */
+.status-middle {
+    flex: 1;
+    padding: 0 20px;
+    color: #444;
+}
+
+/* Right side */
+.status-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.status-right .time {
+    font-size: 13px;
+    color: #888;
+}
+
+
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+<h1 class="page-title">Memebers Status Dashboard</h1>
+<p class="page-subtitle">Recent status updates from your team</p>
+
+<section class="status-card">
+
+  {% if status_updates %}
+    {% for item in status_updates %}
+      <div class="status-row">
+
+        <!-- LEFT -->
+        <div class="status-left">
+          <div class="status-dot"></div>
+          <div class="info">
+            <div class="title">{{ item.project.key }} — {{ item.project.name }}</div>
+            <div class="user">by @{{ item.assignee.username }}</div>
+          </div>
+        </div>
+
+
+
+        <!-- RIGHT -->
+        <div class="status-right">
+          <div class="time">{{ item.created_at|date:"Y-m-d H:i" }}</div>
+
+          <a href="{% url 'project_board' item.project.pk %}" class="btn-chip btn-chip--success">Open project</a>
+          <a href="{% url 'issue_detail' item.pk %}" class="btn-chip">View issue</a>
+        </div>
+
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="empty">No recent status updates.</p>
+  {% endif %}
+
+</section>
+{% endblock %}

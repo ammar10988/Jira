@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+{% block title %}Login with OTP{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Login with OTP</h1>
+<p class="page-subtitle">Use your company email to receive a one-time code.</p>
+
+<div class="card login-card">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <p>
+      {{ form.email.label_tag }}
+      {{ form.email }}
+      {% if form.email.errors %}
+        <span class="field-error">{{ form.email.errors|striptags }}</span>
+      {% endif %}
+    </p>
+    <button type="submit" class="btn-primary">Send OTP</button>
+  </form>
+</div>
+{% endblock %}

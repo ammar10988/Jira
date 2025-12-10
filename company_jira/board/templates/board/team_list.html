@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+{% block title %}Team Members{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Team Members</h1>
+<p class="page-subtitle">Everyone who can be assigned to issues.</p>
+
+<div class="card">
+  <table class="tasks-table">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Email</th>
+        <th>Designation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for member in members %}
+        <tr>
+          <td>@{{ member.username }}</td>
+          <td>{{ member.email|default:"—" }}</td>
+          <td>{% if member.is_staff %}Yes{% else %}No{% endif %}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3" class="empty">No members yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

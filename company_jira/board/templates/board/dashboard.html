@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+
+  <!-- Row 1: Overview + Priority -->
+  <div class="dashboard-row">
+    <section class="card stats">
+      <h2>Overview</h2>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="label">To Do</span>
+          <span class="value">{{ issue_counts.todo }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">In Progress</span>
+          <span class="value">{{ issue_counts.in_progress }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Done</span>
+          <span class="value">{{ issue_counts.done }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Priority breakdown</h2>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="label">Low</span>
+          <span class="value">{{ priority_counts.low }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Medium</span>
+          <span class="value">{{ priority_counts.medium }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">High</span>
+          <span class="value">{{ priority_counts.high }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Critical</span>
+          <span class="value">{{ priority_counts.critical }}</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Row 2: Recently updated + Projects -->
+  <div class="dashboard-row">
+    <section class="card">
+      <h2>Recently updated</h2>
+      <ul class="project-list">
+        {% for issue in recent_issues %}
+          <li>
+            <span class="project-key">{{ issue.project.key }}-{{ issue.id }}</span>
+            <span class="project-name">{{ issue.title }}</span>
+          </li>
+        {% empty %}
+          <li>No issues yet.</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Projects</h2>
+      {% if projects %}
+        <ul class="project-list">
+          {% for p in projects %}
+            <li>
+              <a href="{% url 'project_board' p.pk %}">
+                <span class="project-key">{{ p.key }}</span>
+                <span class="project-name">{{ p.name }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No projects yet. <a href="{% url 'project_create' %}">Create one</a>.</p>
+      {% endif %}
+    </section>
+  </div>
+
+  {% if profile.role == 'BOSS' %}
+    <!-- Row 3: full-width Departments card -->
+    <section class="card">
+      <h2>Departments</h2>
+      <ul class="project-list">
+        {% for code, label in department_choices %}
+          <li>
+            <a href="{% url 'department_projects' code %}">
+              {{ label }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+</div>
+{% endblock %}

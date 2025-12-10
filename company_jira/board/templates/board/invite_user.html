@@ -1,0 +1,52 @@
+
+{% extends "base.html" %}
+{% block title %}Invite member{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Invite / Create User</h1>
+<p class="page-subtitle">
+  Create a user account for a team member so they can log in via OTP.
+</p>
+
+<section class="card" style="max-width: 480px;">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-row">
+      <label for="{{ form.email.id_for_label }}">Work email</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <div class="field-error">{{ form.email.errors|striptags }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-row">
+      <label for="{{ form.full_name.id_for_label }}">Full name (optional)</label>
+      {{ form.full_name }}
+      {% if form.full_name.errors %}
+        <div class="field-error">{{ form.full_name.errors|striptags }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-row">
+      <label for="{{ form.role.id_for_label }}">Role</label>
+      {{ form.role }}
+      {% if form.role.errors %}
+        <div class="field-error">{{ form.role.errors|striptags }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-row">
+      <label for="{{ form.department.id_for_label }}">Department</label>
+      {{ form.department }}
+      {% if form.department.errors %}
+        <div class="field-error">{{ form.department.errors|striptags }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-row form-actions">
+      <button type="submit" class="btn-primary">Save user</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}{{ dept_label }} department{% endblock %}
+
+{% block content %}
+<h1 class="page-title">{{ dept_label }} department</h1>
+
+<div class="dashboard-grid">
+
+  {# Summary card #}
+  <section class="card">
+    <h2>Summary</h2>
+    <div class="stats-row">
+      <div class="stat">
+        <span class="label">To Do</span>
+        <span class="value">{{ todo_count }}</span>
+      </div>
+      <div class="stat">
+        <span class="label">In Progress</span>
+        <span class="value">{{ in_progress_count }}</span>
+      </div>
+      <div class="stat">
+        <span class="label">Done</span>
+        <span class="value">{{ done_count }}</span>
+      </div>
+    </div>
+  </section>
+
+  {# Team members #}
+  <section class="card">
+    <h2>Team members</h2>
+    {% if members %}
+      <ul class="project-list">
+        {% for u in members %}
+          <li>
+            <span class="project-name">
+              @{{ u.username }}
+              {% if u.profile.role == "LEAD" %}(Lead){% endif %}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No members assigned to this department yet.</p>
+    {% endif %}
+  </section>
+
+  {# Projects in this department #}
+  <section class="card">
+    <h2>Projects in this department</h2>
+    {% if projects %}
+      <ul class="project-list">
+        {% for p in projects %}
+          <li>
+            <a href="{% url 'project_board' p.pk %}">
+              <span class="project-key">{{ p.key }}</span>
+              <span class="project-name">{{ p.name }}</span>
+            </a>
+            <span class="project-meta">
+              Owner: @{{ p.owner.username }}
+              · Members: {{ p.members.count }}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No projects yet for this department.</p>
+    {% endif %}
+  </section>
+
+  {# Recent issues #}
+  <section class="card">
+    <h2>Recent issues</h2>
+    {% if recent_issues %}
+      <ul class="project-list">
+        {% for issue in recent_issues %}
+          <li>
+            <a href="{% url 'issue_detail' issue.pk %}">
+              <span class="project-key">{{ issue.project.key }}-{{ issue.id }}</span>
+              <span class="project-name">{{ issue.title }}</span>
+            </a>
+            <span class="project-meta">
+              {{ issue.get_status_display }} ·
+              {{ issue.get_priority_display }}
+              {% if issue.assignee %} · @{{ issue.assignee.username }}{% endif %}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No issues yet.</p>
+    {% endif %}
+  </section>
+
+</div>
+{% endblock %}

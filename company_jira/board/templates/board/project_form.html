@@ -1,0 +1,73 @@
+
+{% extends "base.html" %}
+{% block title %}Create Project{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1 class="page-title">Create Project</h1>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    {{ form.name.errors }}
+    <p>
+      <label for="{{ form.name.id_for_label }}">Name:</label>
+      {{ form.name }}
+    </p>
+
+    {{ form.key.errors }}
+    <p>
+      <label for="{{ form.key.id_for_label }}">Key:</label>
+      {{ form.key }} <span class="help-text">Short code, e.g. CRM</span>
+    </p>
+
+    {{ form.description.errors }}
+    <p>
+      <label for="{{ form.description.id_for_label }}">Description:</label>
+      {{ form.description }}
+    </p>
+
+    <p>
+      <label for="{{ form.issue_date.id_for_label }}">Issue date:</label>
+      {{ form.issue_date }}
+    </p>
+
+    <p>
+      <label for="{{ form.deadline_date.id_for_label }}">Deadline date:</label>
+      {{ form.deadline_date }}
+    </p>
+
+    <p>
+      <label for="{{ form.sop.id_for_label }}">SOP:</label>
+      {{ form.sop }} <span class="help-text">Step-by-step SOP for this project.</span>
+    </p>
+
+    <p>
+      <label for="{{ form.members.id_for_label }}">Members:</label>
+      {{ form.members }}
+      <span class="help-text">Select team members for this project.</span>
+    </p>
+
+    {# 🔹 NEW: initial attachments when creating the project #}
+    <p>
+      <label for="id_attachments">Initial files:</label>
+      <input type="file" name="attachments" id="id_attachments" multiple>
+      <span class="help-text"></span>
+    </p>
+
+    <div class="form-row">
+      <label for="id_reference_url">Reference Link:</label>
+      {{ form.reference_url }}
+      <small class="help-text">
+        Optional: Add a URL link for documentation, Drive folder, etc.
+      </small>
+    </div>
+
+    <button type="submit" class="btn-primary">Save</button>
+  </form>
+</div>
+
+
+
+{% endblock %}

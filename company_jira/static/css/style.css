@@ -1,0 +1,1143 @@
+:root {
+  /* Light theme variables */
+  --bg: #ffffff;
+  --bg-elevated: #f8fafc;
+  --card: #ffffff;
+  --card-contrast: #f3f4f6;
+  --accent: #0D6B50; /* green (kept similar) */
+  --accent-soft: rgba(22, 163, 74, 0.08);
+  --text: #0f172a; /* dark text */
+  --muted: #6b7280; /* gray-muted */
+  --danger: #ef4444;
+  --border: #e6e9ee;
+  --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* subtle light gradient */
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+/* Logo */
+
+.logo-link { display:inline-flex; align-items:center; text-decoration:none; }
+.logo-img {
+  height: 50px;         /* adjust height to fit topbar */
+  width: auto;
+  display:block;
+  object-fit:contain;
+  margin-right: 10px;
+  filter: none;         /* if your image is colored, keep it; remove to use CSS tint */
+}
+
+
+/* Topbar */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+}
+
+.logo {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.topbar nav a {
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.topbar .user {
+  margin-left: 1rem;
+  color: var(--muted);
+}
+
+/* Layout */
+
+.page {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Cards */
+
+.card {
+  background: var(--card);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  color: var(--text);
+}
+
+.card h1,
+.card h2 {
+  margin-top: 0;
+}
+
+/* Dashboard */
+
+/* Outer container just stacks the rows */
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;    /* vertical space between rows */
+}
+
+/* Each row holds two cards, same height */
+.dashboard-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Make the two cards in a row equal width + height */
+.dashboard-row .card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+/* Stats blocks (Overview + Priority breakdown) */
+.stats-row {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.stat {
+  flex: 1;
+  padding: 1.1rem 1rem;
+  border-radius: 0.7rem;
+  background: linear-gradient(180deg, var(--accent-soft), rgba(250, 250, 250, 0.95));
+  display: flex;
+  flex-direction: column;   /* STACK label & number vertically */
+  align-items: center;       /* center text horizontally */
+  justify-content: center;   /* center content vertically */
+  text-align: center;
+  min-height: 85px;          /* ensures equal card height */
+}
+
+/* Label above */
+.stat .label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 0.35rem;  /* space between label and number */
+}
+
+/* Number below */
+.stat .value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+
+
+/* Projects list */
+
+.project-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-list li + li {
+  margin-top: 0.5rem;
+}
+
+.project-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--card-contrast);
+  color: var(--text);
+}
+
+.project-key {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.project-name {
+  color: var(--text);
+}
+
+/* Kanban */
+
+.page-title {
+  margin-bottom: 0.25rem;
+  color: var(--text);
+}
+
+.page-subtitle {
+  margin-top: 0;
+  color: var(--muted);
+}
+
+.kanban {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.column {
+  background: var(--card-contrast);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+}
+
+.column h2 {
+  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(14, 20, 32, 0.04);
+  padding-bottom: 0.5rem;
+}
+
+.issue-card {
+  background: var(--card);
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.7rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid rgba(14,20,32,0.06);
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, border-color 0.1s;
+}
+
+.issue-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(14, 20, 32, 0.06);
+}
+
+.issue-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.issue-meta {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.issue-meta span:last-child {
+  margin-left: auto;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.issue-edit {
+  margin-top: 0.4rem;
+  display: inline-block;
+  font-size: 0.8rem;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Priority colors */
+
+.priority-low {
+  border-left: 3px solid #0D6B50;
+}
+
+.priority-medium {
+  border-left: 3px solid #d97706;
+}
+
+.priority-high {
+  border-left: 3px solid #ea580c;
+}
+
+.priority-critical {
+  border-left: 3px solid var(--danger);
+}
+
+/* Buttons */
+
+.btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(16, 163, 82, 0.12);
+}
+
+.btn-primary:hover {
+  filter: brightness(0.98);
+  transform: translateY(-1px);
+}
+
+/* New issue card */
+
+.new-issue {
+  margin-top: 1.5rem;
+}
+
+/* Filters */
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  color: var(--muted);
+}
+
+.filters select {
+  margin-top: 0.25rem;
+  background: var(--card-contrast);
+  color: var(--text);
+  border-radius: 0.4rem;
+  border: 1px solid var(--border);
+  padding: 0.3rem 0.5rem;
+}
+
+.my-tasks {
+  margin-top: 0.5rem;
+}
+
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tasks-table th,
+.tasks-table td {
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+}
+
+.tasks-table thead {
+  background: var(--card-contrast);
+}
+
+.tasks-table tbody tr:nth-child(even) {
+  background: #ffffff;
+}
+
+.tasks-table tbody tr:nth-child(odd) {
+  background: #fbfbfd;
+}
+
+/* Overdue highlighting */
+.overdue {
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.12);
+}
+
+.tasks-table tr.overdue {
+  background: rgba(254, 226, 226, 0.45);
+}
+
+.tasks-table tr.overdue td {
+  color: #7f1d1d;
+}
+
+/* CHIPS */
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.btn-chip {
+  border: 1px solid rgba(14, 20, 32, 0.06);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.btn-chip:hover {
+  border-color: var(--accent);
+}
+
+.btn-chip--success {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* my-stats */
+
+.my-stats {
+  margin-bottom: 1rem;
+}
+
+/* flash messages */
+
+.flash-container {
+  position: relative;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.flash {
+  padding: 12px 18px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  background: #f3f4f6;
+  border-left: 4px solid #0D6B50;
+  color: var(--text);
+  animation: fadeout 4s forwards;
+}
+
+.flash-success {
+  border-color: #0D6B50;
+}
+
+.flash-error {
+  border-color: #ef4444;
+}
+
+.flash-warning {
+  border-color: #f59e0b;
+}
+
+@keyframes fadeout {
+  0% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Header Notification */
+
+.topbar-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 1rem;
+}
+
+.notif-bell {
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Notification */
+
+.notif-bell {
+  position: relative;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.notif-dot {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--danger);
+  color: white;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.board-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.new-issue-card {
+  margin-top: 1.5rem;
+}
+
+.card-grid-top .card,
+.card-grid-mid .card {
+  min-height: 120px;
+}
+
+.card-grid-top,
+.card-grid-mid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;   /* spacing between cards */
+  margin-bottom: 30px;
+}
+
+.card {
+  padding: 20px;
+  background: var(--card);
+  border-radius: 10px;
+}
+
+/* Logout Navbar */
+
+.nav-link-button {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+.nav-link-button:hover {
+  text-decoration: underline;
+}
+
+/* Project status and issue form */
+
+.card-grid-top,
+.card-grid-mid,
+.board-columns {
+  display: grid;
+  gap: 1.5rem; /* adjust as needed */
+}
+
+.card {
+  margin-bottom: 1.5rem;
+}
+
+.board-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* file input row */
+.file-input-row {
+  display:flex;
+  align-items:center;
+  gap:0.8rem;
+}
+
+/* file label styled like a button */
+.btn-file {
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  padding:0.45rem 0.9rem;
+  background:linear-gradient(180deg,var(--accent),#0D6B50);
+  color:#fff;
+  border-radius:999px;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 2px 10px rgba(16,163,82,0.08);
+  text-decoration:none;
+  border:0;
+}
+
+/* small icon in file button */
+.file-icon { font-size:1rem; }
+
+/* text showing chosen files */
+.chosen-files {
+  color:var(--muted);
+  font-size:0.95rem;
+}
+
+/* form error small style (re-usable) */
+.field-error {
+  color:#ef4444;
+  font-size:0.92rem;
+  margin-top:0.35rem;
+}
+
+/* Primary submit button (match the Save status green styling) */
+.btn-primary.btn-submit {
+  background:linear-gradient(180deg,var(--accent),#0D6B50);
+  color:white;
+  border-radius:999px;
+  padding:0.6rem 1.0rem;
+  border:0;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 4px 18px rgba(2,6,23,0.06);
+}
+
+/* Hover/active */
+.btn-primary.btn-submit:hover { filter:brightness(0.95); }
+.btn-file:hover { filter:brightness(0.95); }
+
+
+
+
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kanban {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==============================
+   Project Form
+   ============================== */
+
+/* Constrain and center the form inside the card */
+.card form {
+  max-width: 900px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Turn each <p> into a 2-column grid row */
+.card form p {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0.6rem 1.2rem;
+  align-items: start;
+  margin: 0.6rem 0;
+}
+
+/* Mobile: stack */
+@media (max-width: 800px) {
+  .card form p {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Labels */
+.card form p label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111;
+  padding-top: 0.35rem;
+  align-self: center;
+}
+
+/* Inputs, selects, textareas */
+.card form input[type="text"],
+.card form input[type="date"],
+.card form input[type="file"],
+.card form select,
+.card form textarea {
+  width: 100%;
+  padding: 0.48rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  color: #111;
+  font-size: 0.95rem;
+  box-shadow: none;
+  transition: border-color .12s ease, box-shadow .12s ease;
+  box-sizing: border-box;
+}
+
+/* Force selects and multi-select to behave (height) */
+.card form select[multiple] {
+  min-height: 110px;
+  height: auto;
+}
+
+/* Textarea nicer height */
+.card form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* Help text that may exist after fields */
+.card form .help-text,
+.card form .form-help,
+.card form .key-help {
+  color: #666;
+  font-size: 0.90rem;
+  margin-top: 0.25rem;
+  grid-column: 2 / 3; /* ensure help text sits under the control */
+}
+
+/* File input row: keep choose file and text inline */
+.card form input[type="file"] {
+  display: inline-block;
+  padding: 0.25rem 0.45rem;
+}
+
+/* Styled choose-files button: wrap the native input if needed */
+.card form .btn-file {
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.45rem .8rem;
+  background: linear-gradient(180deg,#0D6B50,#0D6B50);
+  color:#fff;
+  border-radius:999px;
+  font-weight:700;
+  border:0;
+  cursor:pointer;
+}
+
+/* Small chooser text next to file button */
+.card form .chosen-files {
+  color:#444;
+  font-size:0.92rem;
+  margin-left:0.5rem;
+  align-self:center;
+}
+
+/* Primary submit button (your template uses btn-primary) */
+.card form .btn-primary {
+  background: linear-gradient(180deg,#0D6B50,#0D6B50);
+  color: white;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(34,197,94,0.16);
+  display: inline-block;
+  margin-top: 0.8rem;
+}
+
+/* If error messages are output as list/span, style them */
+.card form .errorlist, .card form .field-error, .card form .help-inline, .card form .error {
+  color: #b91c1c;
+  font-size: 0.92rem;
+  margin: 0.3rem 0 0 0;
+  grid-column: 2 / 3;
+}
+
+/* Fine spacing for the top title inside card */
+.card .page-title { margin-bottom: 0.25rem; }
+
+/* Card padding slightly larger for the form */
+.card { padding: 22px; }
+
+/* subtle visual focus */
+.card form input:focus,
+.card form textarea:focus,
+.card form select:focus {
+  outline: none;
+  border-color: #0D6B50;
+  box-shadow: 0 6px 20px rgba(34,197,94,0.08);
+}
+
+/* ensure date input calendar icon stays visible */
+.card form input[type="date"] { padding-right: 0.7rem; }
+
+/* ensure multi-line help lines align nicely on narrow screens */
+@media (max-width: 420px) {
+  .card form .help-text { grid-column: 1 / -1; }
+  .card form p label { padding-top: 0.2rem; }
+}
+
+/* final spacing for the last element (button) so it doesn't stick to right */
+.card form p:last-of-type { margin-bottom: 0.2rem; }
+
+
+
+/* ============================================
+   Project and issue form 
+   ============================================ */
+
+/* Make both forms consistent with white theme */
+.project-status-card,
+.project-issue-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 25px 28px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  margin-bottom: 28px;
+}
+
+/* Section titles inside cards */
+.project-status-card h2,
+.project-issue-card h2 {
+  margin-top: 0;
+  margin-bottom: 6px;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.project-status-card p,
+.project-issue-card p {
+  color: #444;
+  margin-top: 2px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* ----------------------------------------------
+   Form grid rows for label + field alignment
+   ---------------------------------------------- */
+.form-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: start;
+  gap: 0.7rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 850px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* labels */
+.form-row label {
+  font-weight: 600;
+  color: #222;
+  padding-top: 0.25rem;
+  font-size: 0.95rem;
+}
+
+/* Inputs */
+.form-row input[type="text"],
+.form-row input[type="date"],
+.form-row select,
+.form-row textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  color: #111;
+  font-size: 0.96rem;
+  box-sizing: border-box;
+  transition: border-color .12s ease, box-shadow .12s ease;
+}
+
+/* Textarea */
+.form-row textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Focus style */
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  border-color: #0D6B50;
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
+  outline: none;
+}
+
+/* Multi-select */
+.form-row select[multiple] {
+  min-height: 110px;
+}
+
+/* Help text inside row */
+.form-row .help-text {
+  grid-column: 2 / 3;
+  color: #666;
+  font-size: 0.88rem;
+  margin-top: -4px;
+}
+
+@media (max-width: 850px) {
+  .form-row .help-text {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ----------------------------------------------
+   File upload styling (Project Issue form)
+   ---------------------------------------------- */
+
+.file-input-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Green choose-file button */
+.btn-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.48rem 1rem;
+  background: linear-gradient(180deg, #0D6B50, #0D6B50);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 5px 15px rgba(34,197,94,0.18);
+}
+
+.btn-file:hover {
+  filter: brightness(1.05);
+}
+
+/* The "No files chosen" text */
+.chosen-files {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* ----------------------------------------------
+   Error messages
+   ---------------------------------------------- */
+.field-error {
+  grid-column: 2;
+  color: #b91c1c;
+  font-size: 0.9rem;
+  margin-top: -4px;
+}
+
+.form-errors {
+  color: #b91c1c;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+/* ----------------------------------------------
+   Submit buttons
+   ---------------------------------------------- */
+.btn-primary,
+.btn-submit {
+  background: linear-gradient(180deg, #0D6B50, #0D6B50);
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 26px rgba(34,197,94,0.22);
+}
+
+.btn-primary:hover,
+.btn-submit:hover {
+  filter: brightness(1.07);
+}
+
+/* Align submit inside form-row */
+.form-actions {
+  grid-column: 2;
+}
+
+@media (max-width: 850px) {
+  .form-actions {
+    grid-column: 1;
+  }
+}
+
+
+/* Container (so dropdown is positioned correctly) */
+.profile-menu {
+  position: relative;
+}
+
+/* Dropdown size + look */
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 55px;
+  background: #ffffff;
+  padding: 18px 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 34px rgba(15, 23, 42, 0.16);
+
+  /* make popup bigger */
+  width: 420px;           /* <— bigger popup */
+  max-width: 90vw;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+/* show on hover */
+.profile-menu:hover .profile-dropdown {
+  display: block;
+}
+
+/* header stays same */
+.profile-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 14px;
+}
+
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.ph-label {
+  color: #6b7280;
+}
+
+.ph-value {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Actions row */
+
+.profile-actions {
+  display: flex;
+  gap: 14px;
+}
+
+/* make BOTH children (a + form) equal width */
+.profile-actions > * {
+  flex: 1;
+}
+
+/* remove default form spacing and let button stretch */
+.profile-actions form {
+  margin: 0;
+  display: flex;
+}
+
+/* common button style */
+.profile-btn {
+  flex: 1;               /* fill parent (a or form) */
+  padding: 10px 0;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Logout button (green) */
+.primary-btn {
+  background: #0D6B50;
+  color: white;
+  border: none;
+}
+.primary-btn:hover {
+  background: #0D6B50;
+}
+
+/* Invite button (white with green border) */
+.secondary-btn {
+  background: #ffffff;
+  color: #000;
+  border: 2px solid #0D6B50;
+}
+.secondary-btn:hover {
+  background: #f0fdf4;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Delete Button */
+
+
+.btn-danger {
+    background: #ef4444;                /* Primary red */
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.btn-danger:hover {
+    background: #dc2626;                /* Darker red on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(239, 68, 68, 0.25);
+}
+
+/* URL */
+
+.project-link a {
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.project-link a:hover {
+  text-decoration: underline;
+}

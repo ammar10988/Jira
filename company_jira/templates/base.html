@@ -1,0 +1,394 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}Jira Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
+  <style> body { background: #ffffff !important; color: #111 !important; } </style>
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+  <header class="topbar">
+    <a href="{% url 'dashboard' %}" class="logo-link">
+      <img src="{% static 'images/logo.png' %}" alt="Garage Collective" class="logo-img">
+    </a>
+
+    <nav>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+
+      {% if user.is_authenticated %}
+        {% with role=user.profile.role|default:"EMP" %}
+
+          <a href="{% url 'my_tasks' %}">My Tasks</a>
+
+          {% if user.profile.role == "LEAD" %}
+            <a href="{% url 'teamlead_dashboard' %}">Member Status</a>
+          {% endif %}
+          {% if user.profile.role == "BOSS" %}
+            <a href="{% url 'boss_dashboard' %}">Member Status</a>
+          {% endif %}
+
+          {% if role == "BOSS" or role == "LEAD" %}
+            <a href="{% url 'project_create' %}">New Project</a>
+          {% endif %}
+
+          <!-- RIGHT SIDE: bell + profile -->
+          <span class="topbar-right">
+            <!-- Notification bell -->
+            <a href="{% url 'notifications' %}" class="notif-bell">
+              🔔
+              {% if unread_notifications_count > 0 %}
+                <span class="notif-dot">{{ unread_notifications_count }}</span>
+              {% endif %}
+            </a>
+
+            <!-- Profile dropdown -->
+            <div class="profile-menu">
+              <div class="profile-trigger">
+                <img src="{% static 'images/icon.png' %}" class="profile-icon">
+              </div>
+
+              <div class="profile-dropdown">
+                <div class="profile-header">
+                  <div class="profile-row">
+                    <span class="ph-label">Name:</span>
+                    <span class="ph-value">{{ user.username }}</span>
+                  </div>
+                  <div class="profile-row">
+                    <span class="ph-label">Position:</span>
+                    <span class="ph-value">
+                      {% if role == "BOSS" %}Boss
+                      {% elif role == "LEAD" %}Team Lead
+                      {% else %}Employee{% endif %}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="profile-actions">
+                  {% if role == "BOSS" or role == "LEAD" %}
+                    <a href="{% url 'invite_user' %}" class="profile-btn secondary-btn">
+                      Invite
+                    </a>
+                  {% endif %}
+
+                  <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="profile-btn primary-btn">
+                      Logout
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </span>
+
+        {% endwith %}
+      {% else %}
+        <a href="{% url 'otp_login' %}">Login</a>
+      {% endif %}
+    </nav>
+
+    {% if messages %}
+      <div class="flash-container">
+        {% for message in messages %}
+          <div class="flash flash-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+    {# --- Toast messages (overlay, not pushing layout) --- #}
+  {% if messages %}
+    <div class="flash-container">
+      {% for message in messages %}
+        <div class="flash flash-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+    <p>
+        Powered by 
+        <a href="https://garagecollective.agency" target="_blank">
+            Garage Collective
+        </a>
+    </p>
+</footer>
+
+<!-- ========================================================== -->
+<!-- 🔥 PROFILE DROPDOWN SCRIPT -->
+<!-- ========================================================== -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // profile dropdown (your existing code)
+    const trigger = document.querySelector(".profile-trigger");
+    const dropdown = document.querySelector(".profile-dropdown");
+    if (trigger && dropdown) {
+      trigger.onclick = () => dropdown.classList.toggle("open");
+      document.addEventListener("click", function(e) {
+        if (!document.querySelector(".profile-menu").contains(e.target)) {
+          dropdown.classList.remove("open");
+        }
+      });
+    }
+
+    // 🔔 Auto-hide flash messages after 5 seconds
+    const flashes = document.querySelectorAll(".flash");
+    if (flashes.length) {
+      setTimeout(function () {
+        flashes.forEach(function (el) {
+          el.classList.add("flash-hide");
+        });
+        // optional: remove from DOM after animation
+        setTimeout(function () {
+          flashes.forEach(function (el) {
+            if (el.parentNode) el.parentNode.removeChild(el);
+          });
+        }, 400); // match CSS transition duration
+      }, 5000); // 5 seconds
+    }
+  });
+  </script>
+
+<style>
+/* Profile Dropdown Styles */
+.profile-menu {
+  position: relative;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.profile-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #0D6B50;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  width: 180px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  display: none;
+  z-index: 999;
+}
+
+.profile-dropdown.open {
+  display: block;
+}
+
+.profile-info {
+  margin-bottom: 10px;
+}
+
+.profile-info .role {
+  font-size: 12px;
+  color: #666;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #0D6B50;
+  background: white;
+  color: #0D6B50;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #0D6B50;
+  color: white;
+}
+
+
+/* Keep nav items and avatar perfectly aligned */
+.topbar nav {
+    display: flex;
+    align-items: center;   /* <— THIS aligns everything in 1 straight line */
+    gap: 22px;             /* spacing between links */
+}
+
+.profile-menu {
+    display: flex;
+    align-items: center;   /* <— Prevents vertical shifting */
+}
+
+.profile-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Reduce avatar vertical movement */
+.avatar-circle {
+    margin-top: 0;         /* force correct position */
+}
+
+
+.notification-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notification-item {
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.6rem;
+  margin-bottom: 0.55rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+}
+
+.notification-item:hover {
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.notification-unread {
+  border-color: #0D6B50;
+  background: #fff7ed; /* light red/orange tint */
+  box-shadow: 0 8px 26px rgba(248, 113, 113, 0.18);
+}
+
+.notification-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.notification-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.notification-badge {
+  background: #0D6B50;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.notification-meta {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.notification-actions {
+  margin-top: 0.45rem;
+}
+
+/* footer */
+
+.site-footer {
+    width: 100%;
+    padding: 18px 0;
+    text-align: center;
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 40px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.site-footer a {
+    color: #0D6B50; /* green matching your theme */
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Message Pop */
+
+/* Toast container: fixed, centered, does not push layout */
+.flash-container {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Base toast style */
+.flash {
+  min-width: 260px;
+  max-width: 640px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #111827;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 4px solid #16a34a;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Success / error / info variants if you use message tags */
+.flash-success {
+  border-left-color: #16a34a;
+}
+
+.flash-error,
+.flash-danger {
+  border-left-color: #dc2626;
+}
+
+.flash-warning {
+  border-left-color: #f59e0b;
+}
+
+/* Fade-out state */
+.flash-hide {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+
+</style>
+
+</html>

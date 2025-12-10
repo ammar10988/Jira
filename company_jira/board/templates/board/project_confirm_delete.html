@@ -1,0 +1,21 @@
+
+{% extends "base.html" %}
+{% block title %}Delete project{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1 class="page-title">Delete project</h1>
+  <p class="page-subtitle">
+    You are about to delete <strong>{{ project.key }} — {{ project.name }}</strong>.
+  </p>
+  <p>
+    This will remove the project and all its issues. This action cannot be undone.
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-danger">Yes, delete project</button>
+    <a href="{% url 'project_board' project.pk %}" class="btn-chip">Cancel</a>
+  </form>
+</section>
+{% endblock %}

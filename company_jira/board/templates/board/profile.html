@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Profile</h1>
+<p class="page-subtitle">Your account and recent activity.</p>
+
+<div class="card" style="margin-bottom: 1rem;">
+  <h2>Account</h2>
+  <p><strong>Username:</strong> {{ user.username }}</p>
+  <p><strong>Email:</strong> {{ user.email|default:"—" }}</p>
+  <p><strong>Staff:</strong> {% if user.is_staff %}Yes{% else %}No{% endif %}</p>
+
+  <p style="margin-top: 0.75rem; font-size: 0.9rem;">
+    <a href="{% url 'password_change' %}">Change password</a>
+  </p>
+</div>
+
+<div class="card">
+  <h2>Recently assigned to you</h2>
+  {% if user_issues %}
+    <ul class="project-list">
+      {% for issue in user_issues %}
+        <li>
+          <a href="{% url 'issue_detail' issue.pk %}">
+            {{ issue.project.key }}-{{ issue.id }} – {{ issue.title }}
+          </a>
+          <span style="font-size: 0.8rem; color:#9ca3af;">
+            · {{ issue.get_status_display }} · {{ issue.get_priority_display }}
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No recent issues assigned to you.</p>
+  {% endif %}
+</div>
+{% endblock %}

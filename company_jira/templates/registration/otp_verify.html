@@ -1,0 +1,33 @@
+
+{% extends "base.html" %}
+{% block title %}Enter OTP{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Enter OTP</h1>
+<p class="page-subtitle">We sent a 6-digit code to your email.</p>
+
+<div class="card login-card">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <p>
+      {{ form.email.label_tag }}
+      {{ form.email }}
+      {% if form.email.errors %}
+        <span class="field-error">{{ form.email.errors|striptags }}</span>
+      {% endif %}
+    </p>
+
+    <p>
+      {{ form.code.label_tag }}
+      {{ form.code }}
+      {% if form.code.errors %}
+        <span class="field-error">{{ form.code.errors|striptags }}</span>
+      {% endif %}
+    </p>
+
+    <button type="submit" class="btn-primary">Login</button>
+  </form>
+</div>
+{% endblock %}

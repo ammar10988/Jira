@@ -1,0 +1,155 @@
+
+{% extends "base.html" %}
+{% block title %}My Tasks{% endblock %}
+
+{% block content %}
+<h1 class="page-title">My Tasks</h1>
+<p class="page-subtitle">Issues assigned to you across all projects.</p>
+
+{# --- SUMMARY CARD GOES HERE --- #}
+<div class="card stats my-stats">
+  <div class="stats-row">
+    <div class="stat">
+      <span class="label">To Do</span>
+      <span class="value">{{ summary.todo }}</span>
+    </div>
+    <div class="stat">
+      <span class="label">In Progress</span>
+      <span class="value">{{ summary.in_progress }}</span>
+    </div>
+    <div class="stat">
+      <span class="label">Done</span>
+      <span class="value">{{ summary.done }}</span>
+    </div>
+    <div class="stat">
+      <span class="label">Overdue</span>
+      <span class="value">{{ summary.overdue }}</span>
+    </div>
+  </div>
+</div>
+
+<form method="get" class="filters">
+  <label>
+    Status
+    <select name="status">
+      <option value="all" {% if current_status == "all" %}selected{% endif %}>All</option>
+      {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>
+          {{ label }}
+        </option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>
+    Priority
+    <select name="priority">
+      <option value="all" {% if current_priority == "all" %}selected{% endif %}>All</option>
+      {% for value, label in priority_choices %}
+        <option value="{{ value }}" {% if current_priority == value %}selected{% endif %}>
+          {{ label }}
+        </option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>
+    Sort by
+    <select name="order">
+      <option value="default" {% if current_order == "default" %}selected{% endif %}>Default</option>
+      <option value="due_asc" {% if current_order == "due_asc" %}selected{% endif %}>Due date (earliest)</option>
+      <option value="due_desc" {% if current_order == "due_desc" %}selected{% endif %}>Due date (latest)</option>
+      <option value="prio_desc" {% if current_order == "prio_desc" %}selected{% endif %}>Priority (high first)</option>
+      <option value="updated_desc" {% if current_order == "updated_desc" %}selected{% endif %}>Recently updated</option>
+    </select>
+  </label>
+
+  <button type="submit" class="btn-primary">Filter</button>
+</form>
+
+<div class="card my-tasks">
+  {% if issues %}
+    <table class="tasks-table">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Project</th>
+          <th>Due</th>
+          <th>Updated</th>
+          <th>Issue title</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for issue in issues %}
+          <tr class="priority-{{ issue.priority|lower }} {% if issue.is_overdue %}overdue{% endif %}">
+              <td>{{ issue.project.key }}-{{ issue.id }}</td>
+
+              <!-- Project Status -->
+              <td>{{ issue.title }}</td>
+
+              <td>{{ issue.get_status_display }}</td>
+              <td>{{ issue.get_priority_display }}</td>
+              <td>{{ issue.project.name }}</td>
+
+              <td>
+                  {% if issue.due_date %}
+                      {{ issue.due_date|date:"Y-m-d" }}
+                  {% else %}
+                      —
+                  {% endif %}
+              </td>
+
+              <td>{{ issue.updated_at|date:"Y-m-d H:i" }}</td>
+
+              <!-- Issue Link -->
+              <td>
+                  <a href="{% url 'issue_detail' issue.pk %}">
+                      View Issue
+                  </a>
+              </td>
+
+              <!-- Actions buttons stay same -->
+              <td>
+                  <div class="row-actions">
+                      {% if issue.status != "TODO" %}
+                          <form method="post" action="{% url 'issue_update_status' issue.pk %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="status" value="TODO">
+                              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                              <button type="submit" class="btn-chip">To Do</button>
+                          </form>
+                      {% endif %}
+
+                      {% if issue.status != "IN_PROGRESS" %}
+                          <form method="post" action="{% url 'issue_update_status' issue.pk %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="status" value="IN_PROGRESS">
+                              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                              <button type="submit" class="btn-chip">In Progress</button>
+                          </form>
+                      {% endif %}
+
+                      {% if issue.status != "DONE" %}
+                          <form method="post" action="{% url 'issue_update_status' issue.pk %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="status" value="DONE">
+                              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                              <button type="submit" class="btn-chip btn-chip--success">Done</button>
+                          </form>
+                      {% endif %}
+                  </div>
+              </td>
+          </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty">No tasks assigned to you (yet).</p>
+  {% endif %}
+</div>
+{% endblock %}

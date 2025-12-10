@@ -1,0 +1,50 @@
+
+{% extends "base.html" %}
+{% block title %}Issue {{ issue.project.key }}-{{ issue.id }}{% endblock %}
+
+{% block content %}
+<!-- Minimal issue detail: only title, description, attachments -->
+
+<h1 class="page-title">
+  {{ issue.project.key }}-{{ issue.id }} – {{ issue.title }}
+</h1>
+
+{# Description #}
+<div class="card" style="margin-bottom:1.2rem;">
+  <h2>Description</h2>
+  {% if issue.description %}
+    <div class="issue-description">{{ issue.description|linebreaks }}</div>
+  {% else %}
+    <p class="empty">No description provided.</p>
+  {% endif %}
+</div>
+
+{# Attachments - list uploaded files and allow upload #}
+<div class="card">
+  <h2>Attachments</h2>
+
+  {% if issue.attachments.exists %}
+    <ul style="margin-top:0.6rem;">
+      {% for att in issue.attachments.all %}
+        <li style="margin-bottom:0.5rem;">
+          <a href="{{ att.file.url }}" target="_blank">{{ att.filename }}</a>
+          <span style="font-size:0.85rem;color:#9ca3af;"> — @{{ att.uploaded_by.username }}, {{ att.uploaded_at|date:"Y-m-d H:i" }}</span>
+          {% if request.user.is_staff or request.user == att.uploaded_by %}
+            <form method="post" action="{% url 'attachment_delete' att.pk %}" style="display:inline;margin-left:.6rem;">
+              {% csrf_token %}
+              <button type="submit" class="btn-chip">Delete</button>
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No files attached.</p>
+  {% endif %}
+
+  <hr style="opacity:0.06;margin:1rem 0;">
+
+  <!-- keep file upload form so you can add docs -->
+</div>
+
+{% endblock %}

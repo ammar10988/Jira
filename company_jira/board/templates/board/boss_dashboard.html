@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Member Status{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Member Status</h1>
+<p class="page-subtitle">Recent status updates from your teams</p>
+
+<section class="card">
+  <h2>Recent status updates</h2>
+
+  {% if status_updates %}
+    <ul class="status-list">
+      {% for item in status_updates %}
+        <li class="status-row">
+
+          <!-- LEFT side: project + user + short description -->
+          <div class="status-left">
+            <div class="status-dot"></div>
+
+            <div class="info">
+              <div class="title">
+                {{ item.project.key }} — {{ item.project.name }}
+              </div>
+              <div class="user">
+                by {% if item.assignee %}@{{ item.assignee.username }}{% else %}—{% endif %}
+              </div>
+
+              {% if item.description %}
+                <div class="desc">
+                  {{ item.description|truncatewords:15 }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- RIGHT side: time + buttons -->
+          <div class="status-right">
+            <div class="time">
+              {{ item.created_at|date:"Y-m-d H:i" }}
+            </div>
+            <a class="btn-chip" href="{% url 'project_board' item.project.pk %}">
+              Open project
+            </a>
+            <a class="btn-chip" href="{% url 'issue_detail' item.pk %}">
+              View issue
+            </a>
+          </div>
+
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No recent status updates.</p>
+  {% endif %}
+</section>
+{% endblock %}
+
+
+{% block extra_css %}
+<style>
+/* Card List Container */
+.status-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* Each row */
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+/* Left side */
+.status-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: #27ae60;
+    border-radius: 50%;
+}
+
+.status-left .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.status-left .info .title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.status-left .info .user {
+    font-size: 13px;
+    color: #777;
+}
+
+/* Middle description */
+.status-middle {
+    flex: 1;
+    padding: 0 20px;
+    color: #444;
+}
+
+/* Right side */
+.status-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.status-right .time {
+    font-size: 13px;
+    color: #888;
+}
+
+
+</style>
+{% endblock %}

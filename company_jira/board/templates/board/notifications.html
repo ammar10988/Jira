@@ -1,0 +1,58 @@
+
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Notifications</h1>
+<p class="page-subtitle">Updates related to your projects.</p>
+
+<section class="card" style="max-width: 720px;">
+  <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 0.75rem;">
+    <h2 style="margin:0;">Recent notifications</h2>
+
+    {% if notifications %}
+      <form method="post" style="margin:0;">
+        {% csrf_token %}
+        <button type="submit" class="btn-chip">
+          Mark all as read
+        </button>
+      </form>
+    {% endif %}
+  </div>
+
+  {% if notifications %}
+    <ul class="notification-list">
+      {% for n in notifications %}
+        <li class="notification-item {% if not n.is_read %}notification-unread{% endif %}">
+          <div class="notification-main-row">
+            <div class="notification-text">
+              {{ n.verb }}
+            </div>
+
+            {% if not n.is_read %}
+              <span class="notification-badge">New</span>
+            {% endif %}
+          </div>
+
+          <div class="notification-meta">
+            {{ n.created_at|date:"Y-m-d H:i" }}
+            {% if n.project %}
+              · Project: <strong>{{ n.project.key }} – {{ n.project.name }}</strong>
+            {% endif %}
+          </div>
+
+          {% if n.project %}
+            <div class="notification-actions">
+              <a href="{% url 'project_board' n.project.pk %}" class="btn-chip">
+                View project
+              </a>
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No notifications yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
