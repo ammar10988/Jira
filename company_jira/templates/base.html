@@ -124,10 +124,10 @@
 <!-- ================= FOOTER ================= -->
 <footer class="site-footer">
     <p>
-        Powered by 
-        <a href="https://garagecollective.agency" target="_blank">
-            Garage Collective
-        </a>
+      Powered by 
+      <a href="https://garagecollective.agency" target="_blank">
+        Garage Collective
+      </a>
     </p>
 </footer>
 
@@ -316,6 +316,24 @@
 
 /* footer */
 
+/* ===============================
+   FIXED FOOTER (SEPARATE)
+================================ */
+
+.site-footer {
+    width: 100%;
+    padding: 18px 0;
+    text-align: center;
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 14px;
+
+    border-top: 1px solid #e5e7eb;
+
+    /* IMPORTANT */
+    position: relative;
+}
+
 .site-footer {
     width: 100%;
     padding: 18px 0;
@@ -345,7 +363,7 @@
   top: 12px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2000;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   gap: 8px;
