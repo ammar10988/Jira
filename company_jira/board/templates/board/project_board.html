@@ -88,8 +88,19 @@
   </div>
 
   <div class="card">
-    <h2>Members</h2>
+    <h2 style="display:flex;justify-content:space-between;align-items:center;">
+      Members
+
+      {% if user.profile.role == "BOSS" or user.profile.role == "LEAD" %}
+        <a href="{% url 'project_edit_members' project.pk %}"
+          class="btn-chip">
+          Edit
+        </a>
+      {% endif %}
+    </h2>
+
     <p><strong>Owner:</strong> @{{ project.owner.username }}</p>
+
     {% if project.members.all %}
       <ul>
         {% for m in project.members.all %}
@@ -100,6 +111,7 @@
       <p class="empty">No extra members assigned.</p>
     {% endif %}
   </div>
+
 </div>
 
 {# ---- KANBAN ROW ---- #}
@@ -168,9 +180,11 @@
   </div>
 </div>
 
-<br><br>
+
 
 {# ---------- PROJECT STATUS FORM ---------- #}
+{% if user.profile.role != "BOSS" %}
+
 <form method="post" class="project-status-form">
   {% csrf_token %}
   
@@ -229,15 +243,17 @@
     <button type="submit" class="btn-primary">Save status</button>
   </section>
 </form>
+{% endif %}
 
-<br><br>
+
 
 {# ---------- PROJECT ISSUE FORM ---------- #}
+{% if user.profile.role != "BOSS" %}
+
 <form method="post" enctype="multipart/form-data" class="project-issue-form">
   {% csrf_token %}
 
   <input type="hidden" name="action" value="status_issue">
-  <!-- Default values so IssueForm validation passes when employee files a blocker -->
   <input type="hidden" name="status" value="TODO">
   <input type="hidden" name="priority" value="LOW">
 
@@ -248,23 +264,16 @@
     <div class="form-row">
       <label>Issue / status title</label>
       {{ issue_form.title }}
-      {% if issue_form.title.errors %}
-        <div class="field-error">{{ issue_form.title.errors|striptags }}</div>
-      {% endif %}
     </div>
 
     <div class="form-row">
       <label>Description (optional)</label>
       {{ issue_form.description }}
-      {% if issue_form.description.errors %}
-        <div class="field-error">{{ issue_form.description.errors|striptags }}</div>
-      {% endif %}
     </div>
 
     <div class="form-row">
       <label for="id_attachments">Issue file (optional)</label>
 
-      <!-- Styled file input: hidden input + label so we can style like theme -->
       <input id="id_attachments" type="file" name="attachments" multiple style="display:none;">
       <div class="file-input-row">
         <label for="id_attachments" class="btn-file">
@@ -274,18 +283,16 @@
       </div>
 
       <p class="help-text">
-        Attach any PDF / spec / screenshot related to this issue (you can select multiple files).
+        Attach any PDF / spec / screenshot related to this issue.
       </p>
-      {% if issue_form.non_field_errors %}
-        <div class="form-errors">{{ issue_form.non_field_errors }}</div>
-      {% endif %}
     </div>
 
     <div class="form-row form-actions">
-      <!-- Primary-looking submit (green / rounded to match Save status) -->
       <button type="submit" class="btn-primary btn-submit">Submit</button>
     </div>
   </section>
 </form>
+
+{% endif %}
 
 {% endblock %}

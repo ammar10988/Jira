@@ -7,6 +7,7 @@
   <title>{% block title %}Jira Dashboard{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
   <style> body { background: #ffffff !important; color: #111 !important; } </style>
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
   {% block extra_css %}{% endblock %}
 </head>
 
@@ -22,7 +23,9 @@
       {% if user.is_authenticated %}
         {% with role=user.profile.role|default:"EMP" %}
 
-          <a href="{% url 'my_tasks' %}">My Tasks</a>
+          {% if role != "BOSS" %}
+            <a href="{% url 'my_tasks' %}">My Tasks</a>
+          {% endif %}
 
           {% if user.profile.role == "LEAD" %}
             <a href="{% url 'teamlead_dashboard' %}">Member Status</a>
@@ -60,9 +63,9 @@
                   <div class="profile-row">
                     <span class="ph-label">Position:</span>
                     <span class="ph-value">
-                      {% if role == "BOSS" %}Boss
+                      {% if role == "BOSS" %}Director
                       {% elif role == "LEAD" %}Team Lead
-                      {% else %}Employee{% endif %}
+                      {% else %}Member{% endif %}
                     </span>
                   </div>
                 </div>
@@ -87,7 +90,7 @@
 
         {% endwith %}
       {% else %}
-        <a href="{% url 'otp_login' %}">Login</a>
+        <a href="{% url 'otp_login' %}">OTP Login</a>
       {% endif %}
     </nav>
 

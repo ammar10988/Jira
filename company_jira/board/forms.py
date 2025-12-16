@@ -117,3 +117,13 @@ class InviteUserForm(forms.Form):
         if domain not in allowed_domains:
             raise forms.ValidationError("Please use a company email address.")
         return email
+    
+#--------------------------Edit Members -----------------------------------------#
+
+class ProjectMembersForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ["members"]
+        widgets = {
+            "members": forms.SelectMultiple(attrs={"size": 8}),
+        }

@@ -29,7 +29,7 @@
         <li style="margin-bottom:0.5rem;">
           <a href="{{ att.file.url }}" target="_blank">{{ att.filename }}</a>
           <span style="font-size:0.85rem;color:#9ca3af;"> — @{{ att.uploaded_by.username }}, {{ att.uploaded_at|date:"Y-m-d H:i" }}</span>
-          {% if request.user.is_staff or request.user == att.uploaded_by %}
+          {% if user.profile.role != "BOSS" and (request.user.is_staff or request.user == att.uploaded_by) %}
             <form method="post" action="{% url 'attachment_delete' att.pk %}" style="display:inline;margin-left:.6rem;">
               {% csrf_token %}
               <button type="submit" class="btn-chip">Delete</button>

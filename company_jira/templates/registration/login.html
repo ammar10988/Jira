@@ -1,16 +1,16 @@
 {# registration/login.html #}
 {% extends "base.html" %}
 
-{% block title %}Boss login{% endblock %}
+{% block title %}Director Access{% endblock %}
 
 {% block content %}
 <div class="auth-card">
-  <h1 class="page-title">Boss login</h1>
+  <h1 class="page-title">Director Access</h1>
 
   <p class="page-subtitle" style="margin-bottom: 1.5rem;">
-    This username / password form is only for the
-    <strong>Boss</strong> account.<br>
-    Team Leads and Employees should use
+    Confidential login for 
+    <strong>Director</strong> account.<br>
+    All other users are required to authenticate using
     <a href="{% url 'otp_login' %}">OTP login</a>.
   </p>
 
@@ -24,7 +24,7 @@
     {% endif %}
 
     <div class="form-row">
-      <label for="{{ form.username.id_for_label }}">Boss username</label>
+      <label for="{{ form.username.id_for_label }}">Director username</label>
       {{ form.username }}
       {% if form.username.errors %}
         <div class="field-error">{{ form.username.errors|striptags }}</div>
@@ -47,8 +47,7 @@
   </form>
 
   <p class="help-text" style="margin-top: 0.75rem; font-size: 0.8rem;">
-    Use the Boss username &amp; password you created with
-    <code>createsuperuser</code>.
+    Use your director credentials.
   </p>
 </div>
 {% endblock %}

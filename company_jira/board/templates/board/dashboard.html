@@ -77,7 +77,12 @@
           {% endfor %}
         </ul>
       {% else %}
-        <p>No projects yet. <a href="{% url 'project_create' %}">Create one</a>.</p>
+        {% if user.profile.role == "BOSS" or user.profile.role == "LEAD" %}
+          <p>No projects yet. <a href="{% url 'project_create' %}">Create one.</a></p>
+        {% else %}
+          <p>No projects yet.</p>
+        {% endif %}
+
       {% endif %}
     </section>
   </div>

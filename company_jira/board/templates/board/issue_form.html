@@ -3,6 +3,9 @@
 {% block title %}Status of the project{% endblock %}
 
 {% block content %}
+
+{% if user.profile.role != "BOSS" %}
+
 <div class="form-wrapper card">
   <h1>Status of the project</h1>
   <p class="muted-text" style="margin-bottom: 1rem;">
@@ -54,7 +57,6 @@
     <div class="form-row">
       <label for="id_attachments">Issue files:</label>
       {{ form.files }}
-      {# or whatever field name you use for attachments #}
       <small class="help-text">
         Attach any PDF/spec for this issue.
       </small>
@@ -65,4 +67,9 @@
     </button>
   </form>
 </div>
+
+{% else %}
+  <p class="empty">You don’t have permission to create project status.</p>
+{% endif %}
+
 {% endblock %}

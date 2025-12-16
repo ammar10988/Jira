@@ -24,7 +24,9 @@ from .views import (
     otp_login_verify,
     InviteUserView,
     NotificationListView,
+    ProjectMembersUpdateView,
 )
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("", DashboardView.as_view(), name="dashboard"),
@@ -62,4 +64,10 @@ urlpatterns = [
     path("login/otp/verify/", otp_login_verify, name="otp_verify"),
     path("members/invite/", InviteUserView.as_view(), name="invite_user"),
     path("notifications/", NotificationListView.as_view(), name="notifications"),
+    path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path(
+    "projects/<int:pk>/members/",
+    ProjectMembersUpdateView.as_view(),
+    name="project_edit_members",
+),
 ]

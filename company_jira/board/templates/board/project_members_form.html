@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Edit Project Members{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:520px;">
+  <h1>Edit Members</h1>
+  <p class="muted-text">
+    Select members who should have access to this project.
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.members }}
+
+    <div style="margin-top:1rem;">
+      <button type="submit" class="btn-primary">Save</button>
+      <a href="{% url 'project_board' object.pk %}" class="btn-secondary">
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

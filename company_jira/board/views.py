@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, CreateView, UpdateView, ListView
 
 from .models import Project, Issue, Comment, Attachment, ProjectAttachment, Profile
-from .forms import ProjectForm, IssueForm, CommentForm, AttachmentForm, ProjectAttachmentForm
+from .forms import ProjectForm, IssueForm, CommentForm, AttachmentForm, ProjectAttachmentForm, ProjectMembersForm
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -129,8 +129,15 @@ class ProjectBoardView(LoginRequiredMixin, DetailView):
         logger = logging.getLogger(__name__)
 
         self.object = self.get_object()
+
+        # 🚫 Block Boss from creating status or issues
+        if getattr(request.user.profile, "role", None) == "BOSS":
+            messages.error(request, "Boss cannot create status or issues.")
+            return redirect("project_board", pk=self.object.pk)
+
         project = self.object
         action = request.POST.get("action")
+
 
         form = IssueForm(request.POST, request.FILES)
 
@@ -924,13 +931,13 @@ class InviteUserView(View):
 
         # Optional: send them a welcome email with instructions
         send_mail(
-            subject="You’ve been added to Jira dashboard",
+            subject="You’ve been added to G-Track dashboard",
             message=(
                 "Hi,\n\n"
-                "You’ve been added to the Garage Collective Jira dashboard.\n"
+                "You’ve been added to the Garage Collective G-Track dashboard.\n"
                 "To log in, go to the OTP login page, enter this email address "
                 "and use the one-time code you receive.\n\n"
-                "Login page: https://your-domain.com/login/otp/\n"
+                "Login page: https://garagecollective.agency/G-track/login/otp/\n"
             ),
             from_email=None,
             recipient_list=[email],
@@ -969,3 +976,22 @@ class NotificationListView(LoginRequiredMixin, ListView):
 
         messages.success(request, "All notifications marked as read.")
         return redirect("notifications")
+    
+
+#-------------------------Edit Members----------------------------------------------#
+
+class ProjectMembersUpdateView(LoginRequiredMixin, UpdateView):
+    model = Project
+    form_class = ProjectMembersForm
+    template_name = "board/project_members_form.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        role = getattr(request.user.profile, "role", None)
+        if role not in ("BOSS", "LEAD"):
+            messages.error(request, "You are not allowed to edit project members.")
+            return redirect("project_board", pk=kwargs["pk"])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        messages.success(self.request, "Project members updated.")
+        return reverse("project_board", kwargs={"pk": self.object.pk})

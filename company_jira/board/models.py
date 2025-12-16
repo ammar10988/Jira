@@ -16,9 +16,9 @@ class Profile(models.Model):
     ROLE_LEAD = "LEAD"
     ROLE_EMPLOYEE = "EMP"
     ROLE_CHOICES = [
-        (ROLE_BOSS, "Boss"),
+        (ROLE_BOSS, "Director"),
         (ROLE_LEAD, "Team Lead"),
-        (ROLE_EMPLOYEE, "Employee"),
+        (ROLE_EMPLOYEE, "Member"),
     ]
 
     DEPT_DEV = "DEV"

@@ -1141,3 +1141,207 @@ a:hover {
 .project-link a:hover {
   text-decoration: underline;
 }
+
+.hidden-panel {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+
+
+
+/* ==============================
+   Auth / Boss Login Page
+   ============================== */
+
+.auth-card {
+  width: 100%;
+  max-width: 800px;   /* 👈 reduced width */
+  margin: 4rem auto;
+  padding: 1.8rem 2rem;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Title */
+.auth-card .page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+/* Subtitle */
+.auth-card .page-subtitle {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Form rows */
+.auth-card .form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+/* Labels */
+.auth-card label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* Inputs */
+.auth-card input {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  background-color: #f9fafb;
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #0f766e;
+  background-color: #ffffff;
+}
+
+/* Button */
+.auth-card .btn-primary {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.6rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+/* Errors */
+.auth-card .field-error {
+  font-size: 0.75rem;
+  color: #dc2626;
+}
+
+.auth-card .form-errors {
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+}
+
+/* Help text */
+.auth-card .help-text {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+/* OTP link */
+.auth-card a {
+  color: #0f766e;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-card a:hover {
+  text-decoration: underline;
+}
+
+
+/* ==============================
+   OTP Login Page
+   ============================== */
+
+.login-card {
+  width: 100%;
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 1.8rem 2rem;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Form layout */
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Override global <p> grid styles */
+.login-card p {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+/* Labels */
+.login-card label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* Input */
+.login-card input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  font-size: 0.9rem;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #0f766e;
+  background-color: #ffffff;
+}
+
+/* Button */
+.login-card .btn-primary {
+  width: 100%;
+  padding: 0.65rem;
+  font-size: 0.95rem;
+  border-radius: 999px;
+}
+
+/* Errors */
+.login-card .field-error {
+  font-size: 0.75rem;
+  color: #dc2626;
+}
+
+/* ==============================
+   Mobile Optimizations
+   ============================== */
+
+@media (max-width: 480px) {
+  .login-card {
+    max-width: 100%;
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .login-card input {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .login-card .btn-primary {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+
+
+/* ---------------Invite Form -----------------------------*/
+
+
